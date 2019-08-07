@@ -8,11 +8,11 @@ api 호출을 위해 cors 설치 필요함
 from flask import Flask
 from flask_cors import CORS
 
-def create_app(app_name='AlphAlefBible'):
-    app = Flask(app_name)
+def create_app():
+    app = Flask(__name__)
     CORS(app)
 
-    from bibleapi.api import api
+    from sblgnt_back.api import api
     app.register_blueprint(api, url_prefix="/api")
 
     return app
