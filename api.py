@@ -5,8 +5,8 @@ api response정의
 '''
 
 from flask import Blueprint, jsonify, request
-from bibleapi.controller import translateVersion as tv
-from bibleapi.controller import gntVersion as gv
+from sblgnt_back.controller import translateVersion as tv
+from sblgnt_back.controller import gntVersion as gv
 
 
 api = Blueprint('api', __name__)
