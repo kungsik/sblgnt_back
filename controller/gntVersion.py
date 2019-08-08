@@ -62,9 +62,9 @@ def getGnt(book='Matthew', chapter=1):
             #     verse += '<span class=phraseNode id=phraseNode phrase_node='+str(phraseNode[0])+'>'
             #     verse += "<span class='syntax phrase1 hidden' id=syntax>P:"+ gnt.F.function.v(phraseNode[0]) + "</span>"
 
-            verse += "<span class=gntwordNode @click='gntwordinfo(" + str(w) + ")'>"
+            verse += '<span class=gntwordNode><a tabindex=0 class=word_elm data-poload=/api/word/gnt/'+str(w)+' data-toggle=popover data-trigger=focus>'
             verse += gnt.F.g_word.v(w)
-            verse += '</span>'
+            verse += '</a></span>'
 
             if gnt.F.trailer.v(w):
                 verse += '<span class=trailerNode>'
