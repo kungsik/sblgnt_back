@@ -102,6 +102,7 @@ def word_function(node):
         w_f.append("격: " + gnt.F.Case.v(node))
     if gnt.F.Type.v(node):
         w_f.append("유형: " + gnt.F.Type.v(node))
+    #w_f.append("사전: <a href=https://dict.naver.com/grckodict/#/search?query=" + gnt.F.UnicodeLemma.v(node)  + " target=_blank>보기</a>")
 
     return w_f
 
