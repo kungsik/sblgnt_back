@@ -117,8 +117,10 @@ def getGnt(book='Matthew', chapter=1):
 
         #한글 구절 추가
         i = int(i) + 1
+        if korVrs[str(i)] == '[없음]':
+            i = int(i) + 1
         #print(str(i) + ' ' + korVrs[str(i)])
-        verse += '<p>' + korVrs[str(i)] + '</p>'
+        verse += '<p>' + str(chapter) + ':' + str(i) + ' ' + korVrs[str(i)] + '</p>'
 
         ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
         # verse += '</span></span></span></span></li>'
