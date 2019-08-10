@@ -55,7 +55,7 @@ def json_to_verse(ver, book, chp, bib):
         d = json.load(json_data)
         json_chp = int(chp) - 1
         try:
-            verse_str = d[book_code[book]]['chapters'][json_chp][chp]
+            verse_str = d[book_code[book]]['chapters'][json_chp][str(chp)]
             return verse_str
         except KeyError:
             return 'DB 오류로 번역지원되지 않음.'
@@ -77,8 +77,7 @@ def getGnt(book='Matthew', chapter=1):
 
     #한글 번역본 로드(신약)
     korVrs = json_to_verse('kor', book, chapter, 'new')
-    print(korVrs)
-    i = 0;
+    i = 0
 
     for v in verseNode:
         verse += '<li>'
@@ -116,11 +115,10 @@ def getGnt(book='Matthew', chapter=1):
             # if w == lastClauseWordNode: verse += '</span>'
             # if w == lastPhraseWordNode: verse += '</span>'
 
-            #한글 구절 추가
-            #print(korVrs)
-            #i = i + 1
-            #verseNum = str(i)
-            #verse += '<p>' + korVrs[verseNum] + '</p>'
+        #한글 구절 추가
+        i = int(i) + 1
+        #print(str(i) + ' ' + korVrs[str(i)])
+        verse += '<p>' + korVrs[str(i)] + '</p>'
 
         ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
         # verse += '</span></span></span></span></li>'
