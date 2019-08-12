@@ -15,6 +15,8 @@ import json
 import codecs
 from flask import request
 
+from sblgnt_back.controller import translate as tr
+
 SBLGNT = 'sblgnt'
 TG = Fabric( modules=SBLGNT, silent=False )
 
@@ -24,7 +26,8 @@ gnt = TG.load('''
     otext otype psp
     Case Gender Mood Number
     Person Tense Type Voice
-    UnicodeLemma
+    UnicodeLemma gloss strong
+    transliteration
 ''')
 # 보류: ClType, function
 
@@ -132,25 +135,29 @@ def getGnt(book='Matthew', chapter=1):
 # 단어 정보 불러오기
 def word_function(node):
     w_f = []
-    w_f.append("원형: " + gnt.F.UnicodeLemma.v(node))
-    w_f.append("품사: " + gnt.F.psp.v(node))
+    w_f.append("원형:  <span class=sblgnt_word_api>" + gnt.F.UnicodeLemma.v(node) + "</span>" )
+    w_f.append("음역: " + gnt.F.transliteration.v(node))
+    w_f.append("품사: " + tr.eng_to_kor(gnt.F.psp.v(node), "full"))
     if gnt.F.Tense.v(node):
-        w_f.append("시제: " + gnt.F.Tense.v(node))
+        w_f.append("시제: " + tr.eng_to_kor(gnt.F.Tense.v(node), "full"))
     if gnt.F.Mood.v(node):
-        w_f.append("화법: " + gnt.F.Mood.v(node))
+        w_f.append("화법: " + tr.eng_to_kor(gnt.F.Mood.v(node), "full"))
     if gnt.F.Voice.v(node):
-        w_f.append("태: " + gnt.F.Voice.v(node))
+        w_f.append("태: " + tr.eng_to_kor(gnt.F.Voice.v(node), "full"))
     if gnt.F.Person.v(node):
-        w_f.append("인칭: " + gnt.F.Person.v(node))
+        w_f.append("인칭: " + tr.eng_to_kor(gnt.F.Person.v(node), "full"))
     if gnt.F.Gender.v(node):
-        w_f.append("성: " + gnt.F.Gender.v(node))
+        w_f.append("성: " + tr.eng_to_kor(gnt.F.Gender.v(node), "full"))
     if gnt.F.Number.v(node):
-        w_f.append("수: " + gnt.F.Number.v(node))
+        w_f.append("수: " + tr.eng_to_kor(gnt.F.Number.v(node), "full"))
     if gnt.F.Case.v(node):
-        w_f.append("격: " + gnt.F.Case.v(node))
-    if gnt.F.Type.v(node):
-        w_f.append("유형: " + gnt.F.Type.v(node))
-    #w_f.append("사전: <a href=https://dict.naver.com/grckodict/#/search?query=" + gnt.F.UnicodeLemma.v(node)  + " target=_blank>보기</a>")
+        w_f.append("격: " + tr.eng_to_kor(gnt.F.Case.v(node), "full"))
+#    if gnt.F.Type.v(node):
+#        w_f.append("유형: " + tr.eng_to_kor(gnt.F.Type.v(node), "full"))
+    if gnt.F.gloss.v(node):
+        w_f.append("의미: " + gnt.F.gloss.v(node))
+    if gnt.F.strong.v(node):
+        w_f.append("사전: <a href=https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node)  + " target=_blank>보기</a>")
 
     return w_f
 
