@@ -95,14 +95,14 @@ def getGnt(book='Matthew', chapter=1):
                 if gnt.L.d(clauseAtomNode[0], otype='word')[0]:
                     firstClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[0]
             except IndexError:
-                firstClauseAtomNode = 0
+                firstClauseAtomWordNode = 0
                 pass
             
             try:
                 if gnt.L.d(clauseAtomNode[0], otype='word')[-1]:
                     lastClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[-1]
             except IndexError:
-                lastClauseAtomNode = 0
+                lastClauseAtomWordNode = 0
                 pass
 
             if w == firstClauseWordNode:
