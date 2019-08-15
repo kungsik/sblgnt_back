@@ -86,12 +86,25 @@ def getGnt(book='Matthew', chapter=1):
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
             clauseNode = gnt.L.u(w, otype='clause')
-            # phraseNode = gnt.L.u(w, otype='phrase')
+            phraseNode = gnt.L.u(w, otype='phrase')
+
             firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
             lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
+           
+            try:
+                if gnt.L.d(phraseNode[0], otype='word')[0]:
+                    firstPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[0]
+            except IndexError:
+                firstPhraseWordNode = 0
+                pass
+            
+            try:
+                if gnt.L.d(phraseNode[0], otype='word')[-1]:
+                    lastPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[-1]
+            except IndexError:
+                lastPhraseWordNode = 0
+                pass
 
-            # firstPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[0]
-            # lastPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[-1]
 
             if w == firstClauseWordNode:
                 verse += '<span class=clauseNode id=clauseNode clause_node='+str(clauseNode[0])+'>'
@@ -101,9 +114,9 @@ def getGnt(book='Matthew', chapter=1):
                    cltype = 'verbal'
                 verse += "<span class='syntax clause1 hidden' id=syntax>C:"+ cltype +"</span>"
 
-            # if w == firstPhraseWordNode:
-            #     verse += '<span class=phraseNode id=phraseNode phrase_node='+str(phraseNode[0])+'>'
-            #     verse += "<span class='syntax phrase1 hidden' id=syntax>P:"+ gnt.F.function.v(phraseNode[0]) + "</span>"
+            if w == firstPhraseWordNode:
+                verse += '<span class=phraseNode id=phraseNode phrase_node='+str(phraseNode[0])+'>'
+                verse += "<span class='syntax phrase1 hidden' id=syntax>P:"+ gnt.F.function.v(phraseNode[0]) + "</span>"
 
             verse += '<span class=gntwordNode><a tabindex=0 class=sblgnt_word_elm data-poload=/sblgnt/word/'+str(w)+' data-toggle=popover data-trigger=focus>'
             verse += gnt.F.g_word.v(w)
@@ -115,17 +128,15 @@ def getGnt(book='Matthew', chapter=1):
                 verse += '</span>'
             
             if w == lastClauseWordNode: verse += '</span>'
-            # if w == lastPhraseWordNode: verse += '</span>'
+            if w == lastPhraseWordNode: verse += '</span>'
 
+        ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
+        verse += '</span></span></span></span></li>'
         #한글 구절 추가
         i = int(i) + 1
         if korVrs[str(i)] == '[없음]':
-            i = int(i) + 1
-        #print(str(i) + ' ' + korVrs[str(i)])
+             i = int(i) + 1
         verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(i) + ' ' + korVrs[str(i)] + '</p>'
-
-        ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
-        # verse += '</span></span></span></span></li>'
         verse += '</li>'
 
     verse += '</ol></div>'
