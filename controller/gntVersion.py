@@ -111,11 +111,11 @@ def getGnt(book='Matthew', chapter=1):
                     cltype = gnt.F.ClType.v(clauseNode[0])
                 else:
                     cltype = 'Verbal'
-                verse += "<span class='gntclause'>C:"+ tr.eng_to_kr(cltype, "full") +"</span>"
+                verse += "<span class='clause1'>C:"+ tr.eng_to_kor(cltype, "full") +"</span>"
 
             if w == firstClauseAtomWordNode:
                 verse += '<span class=phraseNode phrase_node='+str(clauseAtomNode[0])+'>'
-                verse += "<span class='gntclauseatom'>P:"+ tr.eng_to_kr(gnt.F.function.v(clauseAtomNode[0]), "full") + "</span>"
+                verse += "<span class='clauseatom'>P:"+ tr.eng_to_kor(gnt.F.function.v(clauseAtomNode[0]), "full") + "</span>"
 
             verse += '<span class=gntwordNode><a tabindex=0 class=sblgnt_word_elm data-poload=/sblgnt/word/'+str(w)+' data-toggle=popover data-trigger=focus>'
             verse += gnt.F.g_word.v(w)
