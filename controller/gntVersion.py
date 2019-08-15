@@ -27,7 +27,7 @@ gnt = TG.load('''
     Case Gender Mood Number
     Person Tense Type Voice
     UnicodeLemma gloss strong
-    transliteration
+    transliteration ClType function
 ''')
 # 보류: ClType, function
 
@@ -64,7 +64,6 @@ def json_to_verse(ver, book, chp, bib):
             return 'DB 오류로 번역지원되지 않음.'
 
 
-
 # 그리스어 텍스트 불러오기
 def getGnt(book='Matthew', chapter=1):
     chpNode = gnt.T.nodeFromSection((book, chapter))
@@ -86,21 +85,21 @@ def getGnt(book='Matthew', chapter=1):
         verse += '<li>'
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
-            # clauseNode = gnt.L.u(w, otype='clause')
+            clauseNode = gnt.L.u(w, otype='clause')
             # phraseNode = gnt.L.u(w, otype='phrase')
-            # firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
-            # lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
+            firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
+            lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
 
             # firstPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[0]
             # lastPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[-1]
 
-            # if w == firstClauseWordNode:
-            #     verse += '<span class=clauseNode id=clauseNode clause_node='+str(clauseNode[0])+'>'
-            #     if gnt.F.ClType.v(clauseNode[0]):
-            #         cltype = gnt.F.ClType.v(clauseNode[0])
-            #     else:
-            #         cltype = 'verbal'
-            #     verse += "<span class='syntax clause1 hidden' id=syntax>C:"+ cltype +"</span>"
+            if w == firstClauseWordNode:
+                verse += '<span class=clauseNode id=clauseNode clause_node='+str(clauseNode[0])+'>'
+                if gnt.F.ClType.v(clauseNode[0]):
+                    cltype = gnt.F.ClType.v(clauseNode[0])
+                else:
+                   cltype = 'verbal'
+                verse += "<span class='syntax clause1 hidden' id=syntax>C:"+ cltype +"</span>"
 
             # if w == firstPhraseWordNode:
             #     verse += '<span class=phraseNode id=phraseNode phrase_node='+str(phraseNode[0])+'>'
@@ -115,7 +114,7 @@ def getGnt(book='Matthew', chapter=1):
                 verse += gnt.F.trailer.v(w)
                 verse += '</span>'
             
-            # if w == lastClauseWordNode: verse += '</span>'
+            if w == lastClauseWordNode: verse += '</span>'
             # if w == lastPhraseWordNode: verse += '</span>'
 
         #한글 구절 추가
