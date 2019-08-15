@@ -25,7 +25,7 @@ gnt = TG.load('''
     g_word trailer
     otext otype psp
     Case Gender Mood Number
-    Person Tense Type Voice
+    Person Tense Voice
     UnicodeLemma gloss strong
     transliteration ClType function
 ''')
@@ -86,37 +86,36 @@ def getGnt(book='Matthew', chapter=1):
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
             clauseNode = gnt.L.u(w, otype='clause')
-            phraseNode = gnt.L.u(w, otype='phrase')
+            clauseAtomNode = gnt.L.u(w, otype='clause_atom')
 
             firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
             lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
            
             try:
-                if gnt.L.d(phraseNode[0], otype='word')[0]:
-                    firstPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[0]
+                if gnt.L.d(clauseAtomNode[0], otype='word')[0]:
+                    firstClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[0]
             except IndexError:
-                firstPhraseWordNode = 0
+                firstClauseAtomNode = 0
                 pass
             
             try:
-                if gnt.L.d(phraseNode[0], otype='word')[-1]:
-                    lastPhraseWordNode = gnt.L.d(phraseNode[0], otype='word')[-1]
+                if gnt.L.d(clauseAtomNode[0], otype='word')[-1]:
+                    lastClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[-1]
             except IndexError:
-                lastPhraseWordNode = 0
+                lastClauseAtomNode = 0
                 pass
 
-
             if w == firstClauseWordNode:
-                verse += '<span class=clauseNode id=clauseNode clause_node='+str(clauseNode[0])+'>'
+                verse += '<span class=clauseNode clause_node='+str(clauseNode[0])+'>'
                 if gnt.F.ClType.v(clauseNode[0]):
                     cltype = gnt.F.ClType.v(clauseNode[0])
                 else:
-                   cltype = 'verbal'
-                verse += "<span class='syntax clause1 hidden' id=syntax>C:"+ cltype +"</span>"
+                    cltype = 'Verbal'
+                verse += "<span class='gntclause'>C:"+ tr.eng_to_kr(cltype, "full") +"</span>"
 
-            if w == firstPhraseWordNode:
-                verse += '<span class=phraseNode id=phraseNode phrase_node='+str(phraseNode[0])+'>'
-                verse += "<span class='syntax phrase1 hidden' id=syntax>P:"+ gnt.F.function.v(phraseNode[0]) + "</span>"
+            if w == firstClauseAtomWordNode:
+                verse += '<span class=phraseNode phrase_node='+str(clauseAtomNode[0])+'>'
+                verse += "<span class='gntclauseatom'>P:"+ tr.eng_to_kr(gnt.F.function.v(clauseAtomNode[0]), "full") + "</span>"
 
             verse += '<span class=gntwordNode><a tabindex=0 class=sblgnt_word_elm data-poload=/sblgnt/word/'+str(w)+' data-toggle=popover data-trigger=focus>'
             verse += gnt.F.g_word.v(w)
@@ -128,7 +127,7 @@ def getGnt(book='Matthew', chapter=1):
                 verse += '</span>'
             
             if w == lastClauseWordNode: verse += '</span>'
-            if w == lastPhraseWordNode: verse += '</span>'
+            if w == lastClauseAtomWordNode: verse += '</span>'
 
         ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
         verse += '</span></span></span></span></li>'

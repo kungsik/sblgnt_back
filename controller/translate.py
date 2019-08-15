@@ -180,6 +180,18 @@ translate = {
     "Dative": {"full": "여격", "abbr": "여격"},
     "Vocative": {"full": "호격", "abbr": "호격"},
     "Genitive": {"full": "소유격", "abbr": "소유"},
+    "S": {"full": "주어", "abbr": "주"},
+    "V": {"full": "동사술어", "abbr": "동술"},
+    "IO": {"full": "간접목적어", "abbr": "간목"},
+    "O": {"full": "목적어", "abbr": "목"},
+    "O2": {"full": "이차목적어", "abbr": "이목"},
+    "VC": {"full": "비동사", "abbr": "비동"},
+    "P": {"full": "서술어", "abbr": "술"},
+    "ADV": {"full": "부사구", "abbr": "부"},
+    "Verbless": {"full": "명사절", "abbr": "명절"},
+    "Verbal": {"full": "동사절", "abbr": "동절"},
+    "VerbElided": {"full": "동사생략절", "abbr": "동색절"},
+    "Minor": {"full": "단편절", "abbr": "단편절"},
 }
 
 def eng_to_kor(term, option):
