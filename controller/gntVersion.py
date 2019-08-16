@@ -29,7 +29,6 @@ gnt = TG.load('''
     UnicodeLemma gloss strong
     transliteration ClType function
 ''')
-# 보류: ClType, function
 
 # 번역본 텍스트 불러오기
 #자체 json 파일로 번역본 인용
@@ -82,7 +81,7 @@ def getGnt(book='Matthew', chapter=1):
     i = 0
 
     for v in verseNode:
-        verse += '<li>'
+        verse += '<li style="font-size:20px;">'
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
             clauseNode = gnt.L.u(w, otype='clause')
