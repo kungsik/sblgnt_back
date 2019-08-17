@@ -89,14 +89,14 @@ def getGnt(book='Matthew', chapter=1):
 
             firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
             lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
-           
+
             try:
                 if gnt.L.d(clauseAtomNode[0], otype='word')[0]:
                     firstClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[0]
             except IndexError:
                 firstClauseAtomWordNode = 0
                 pass
-            
+
             try:
                 if gnt.L.d(clauseAtomNode[0], otype='word')[-1]:
                     lastClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[-1]
@@ -124,11 +124,11 @@ def getGnt(book='Matthew', chapter=1):
                 verse += '<span class=trailerNode>'
                 verse += gnt.F.trailer.v(w)
                 verse += '</span>'
-            
+
             if w == lastClauseWordNode: verse += '</span>'
             if w == lastClauseAtomWordNode: verse += '</span>'
-        
-        ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
+
+        ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
         verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button>'
         verse +='</li>'
@@ -172,7 +172,7 @@ def word_function(node):
     return w_f
 
 # 절 정보 불러오기
-def verse_function(node):  
+def verse_function(node):
     wordsNode = gnt.L.d(node, otype='word')
     verse_api = {'words': [], 'gloss': [], 'pdp': [], 'parse': [], 'parse2': []}
     for w in wordsNode:
@@ -196,7 +196,7 @@ def verse_function(node):
                 number = tr.eng_to_kor(gnt.F.Number.v(w), 'abbr')
             else:
                 number = ''
-            
+
             if gnt.F.Mood.v(w):
                 mood = tr.eng_to_kor(gnt.F.Mood.v(w), 'abbr')
             else:
@@ -212,14 +212,19 @@ def verse_function(node):
 
             verse_api['parse'].append(parse_str)
             verse_api['parse2'].append(parse_str2)
-        elif pdp == '명':
+        elif pdp == '명' or pdp == '형':
             parse_str = tr.eng_to_kor(gnt.F.Gender.v(w), 'abbr') + tr.eng_to_kor(gnt.F.Number.v(w), 'abbr')
             verse_api['parse'].append(parse_str)
-            verse_api['parse2'].append('')
-        else:           
+
+            if gnt.F.Case.v(w):
+                case = tr.eng_to_kor(gnt.F.Case.v(w), 'abbr')
+            else:
+                case = ''
+            verse_api['parse2'].append(case)
+        else:
             verse_api['parse'].append('')
             verse_api['parse2'].append('')
-            
+
     section = gnt.T.sectionFromNode(wordsNode[0])
     verse_str = {"kjv": [], "kor": []}
 
@@ -234,7 +239,7 @@ def verse_function(node):
     verse_str['kjv'].append(kjvVrs)
 
     result = {
-        "scripture": section[0] + " " + str(section[1]) + ":" + str(verse_num),
+        "scripture": section[0] + " " + str(section[1]) + ":" + str(section[2]),
         "parsing": verse_api,
         "translation": verse_str
     }

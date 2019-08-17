@@ -13,6 +13,7 @@ translate = {
     "prps": {"full": "인칭대명사", "abbr": "인대"},
     "prde": {"full": "지시대명사", "abbr": "지대"},
     "prin": {"full": "의문대명사", "abbr": "의대"},
+    "pron": {"full": "인칭대명사", "abbr": "인대"},
     "intj": {"full": "감탄사", "abbr": "감탄"},
     "nega": {"full": "부정", "abbr": "부정"},
     "inrg": {"full": "의문사", "abbr": "의문"},
