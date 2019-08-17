@@ -234,7 +234,7 @@ def verse_function(node):
     verse_str['kjv'].append(kjvVrs)
 
     result = {
-        "scripture": section[0] + " " + str(section[1]) + ":" + str(verse_num),
+        "scripture": section[0] + " " + str(section[1]) + ":" + str(section[2]),
         "parsing": verse_api,
         "translation": verse_str
     }
