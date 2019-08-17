@@ -127,9 +127,11 @@ def getGnt(book='Matthew', chapter=1):
             
             if w == lastClauseWordNode: verse += '</span>'
             if w == lastClauseAtomWordNode: verse += '</span>'
-
+        
         ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐. 
-        verse += '</span></span></span></span></li>'
+        verse += '</span></span></span></span>'
+        verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button>'
+        verse +='</li>'
         #한글 구절 추가
         i = int(i) + 1
         if korVrs[str(i)] == '[없음]':
@@ -169,4 +171,72 @@ def word_function(node):
 
     return w_f
 
+# 절 정보 불러오기
+def verse_function(node):  
+    wordsNode = gnt.L.d(node, otype='word')
+    verse_api = {'words': [], 'gloss': [], 'pdp': [], 'parse': [], 'parse2': []}
+    for w in wordsNode:
+        verse_api['words'].append(gnt.F.g_word.v(w))
+        verse_api['gloss'].append(gnt.F.gloss.v(w))
+        pdp = tr.eng_to_kor(gnt.F.psp.v(w), 'abbr')
+        verse_api['pdp'].append(pdp)
+        if pdp == '동':
 
+            if gnt.F.Gender.v(w):
+                gender = tr.eng_to_kor(gnt.F.Gender.v(w), 'abbr')
+            else:
+                gender = ''
+
+            if gnt.F.Person.v(w):
+                person = tr.eng_to_kor(gnt.F.Person.v(w), 'abbr')
+            else:
+                person = ''
+
+            if gnt.F.Number.v(w):
+                number = tr.eng_to_kor(gnt.F.Number.v(w), 'abbr')
+            else:
+                number = ''
+            
+            if gnt.F.Mood.v(w):
+                mood = tr.eng_to_kor(gnt.F.Mood.v(w), 'abbr')
+            else:
+                mood = ''
+
+            if gnt.F.Voice.v(w):
+                voice = tr.eng_to_kor(gnt.F.Voice.v(w), 'abbr')
+            else:
+                voice = ''
+
+            parse_str = tr.eng_to_kor(gnt.F.Tense.v(w), 'abbr') + "." + person + gender + number
+            parse_str2 = mood + '.' + voice
+
+            verse_api['parse'].append(parse_str)
+            verse_api['parse2'].append(parse_str2)
+        elif pdp == '명':
+            parse_str = tr.eng_to_kor(gnt.F.Gender.v(w), 'abbr') + tr.eng_to_kor(gnt.F.Number.v(w), 'abbr')
+            verse_api['parse'].append(parse_str)
+            verse_api['parse2'].append('')
+        else:           
+            verse_api['parse'].append('')
+            verse_api['parse2'].append('')
+            
+    section = gnt.T.sectionFromNode(wordsNode[0])
+    verse_str = {"kjv": [], "kor": []}
+
+    verse_num = section[2]
+    while json_to_verse('kor', section[0], section[1], 'new')[str(verse_num)] == '[없음]':
+        verse_num = verse_num + 1
+
+    korVrs = str(section[1]) + ":" + str(verse_num) + " " + json_to_verse('kor', section[0], section[1], 'new')[str(verse_num)]
+    kjvVrs = str(section[1]) + ":" + str(verse_num) + " " + json_to_verse('kjv', section[0], section[1], 'new')[str(verse_num)]
+
+    verse_str['kor'].append(korVrs)
+    verse_str['kjv'].append(kjvVrs)
+
+    result = {
+        "scripture": section[0] + " " + str(section[1]) + ":" + str(verse_num),
+        "parsing": verse_api,
+        "translation": verse_str
+    }
+
+    return result

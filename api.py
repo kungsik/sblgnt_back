@@ -31,3 +31,10 @@ def gntwordinfo(node):
     result = gv.word_function(node)
     gntwordinfo = {'gntwordinfo': result}
     return jsonify(gntwordinfo)
+
+#gnt 절 분석
+@api.route('/verse/gnt/<int:node>/')
+def gntverseinfo(node):
+    result = gv.verse_function(node)
+    gntverseinfo = {'gntverseinfo': result}
+    return jsonify(gntverseinfo)

@@ -18,6 +18,7 @@ translate = {
     "inrg": {"full": "의문사", "abbr": "의문"},
     "adjv": {"full": "형용사", "abbr": "형"},
     "adj": {"full": "형용사", "abbr": "형"},
+    "ptcl": {"full": "불변화사", "abbr": "불변"},
     "sg": {"full": "단수", "abbr": "단"},
     "Singular": {"full": "단수", "abbr": "단"},
     "du": {"full": "쌍수", "abbr": "쌍"},
