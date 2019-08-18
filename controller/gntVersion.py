@@ -78,9 +78,14 @@ def getGnt(book='Matthew', chapter=1):
 
     #한글 번역본 로드(신약)
     korVrs = json_to_verse('kor', book, chapter, 'new')
-    i = 0
+    n = 1
 
-    for v in verseNode:
+    for v in verseNode: 
+        sectionFromVerse = gnt.T.sectionFromNode(v)
+        while sectionFromVerse[2] != n:
+            verse += '<li style="font-size:20px; padding-bottom:15px;">[없음]</li>'
+            n = n + 1
+
         verse += '<li style="font-size:20px;">'
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
@@ -133,11 +138,10 @@ def getGnt(book='Matthew', chapter=1):
         verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button>'
         verse +='</li>'
         #한글 구절 추가
-        i = int(i) + 1
-        if korVrs[str(i)] == '[없음]':
-             i = int(i) + 1
-        verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(i) + ' ' + korVrs[str(i)] + '</p>'
+        verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
         verse += '</li>'
+
+        n = n + 1
 
     verse += '</ol></div>'
     return verse
@@ -175,6 +179,7 @@ def word_function(node):
 def verse_function(node):
     wordsNode = gnt.L.d(node, otype='word')
     verse_api = {'words': [], 'gloss': [], 'pdp': [], 'parse': [], 'parse2': []}
+
     for w in wordsNode:
         verse_api['words'].append(gnt.F.g_word.v(w))
         verse_api['gloss'].append(gnt.F.gloss.v(w))
@@ -237,7 +242,7 @@ def verse_function(node):
 
     verse_str['kor'].append(korVrs)
     verse_str['kjv'].append(kjvVrs)
-
+ 
     result = {
         "scripture": section[0] + " " + str(section[1]) + ":" + str(section[2]),
         "parsing": verse_api,
