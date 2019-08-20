@@ -171,7 +171,8 @@ def word_function(node):
     if gnt.F.gloss.v(node):
         w_f.append("의미: " + gnt.F.gloss.v(node))
     if gnt.F.strong.v(node):
-        w_f.append("사전: <a href=https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node)  + " target=_blank>보기</a>")
+        w_f.append("<a href=https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node)  + " target=_blank>네이버사전</a>")
+        w_f.append("<a href=https://biblehub.com/str/greek/" + gnt.F.strong.v(node)  + ".htm target=_blank>바이블허브</a>")
 
     return w_f
 
