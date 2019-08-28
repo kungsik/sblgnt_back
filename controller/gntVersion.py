@@ -16,6 +16,7 @@ import codecs
 from flask import request
 
 from sblgnt_back.controller import translate as tr
+from sblgnt_back.lib import vcodeparser as vp
 
 SBLGNT = 'sblgnt'
 TG = Fabric( modules=SBLGNT, silent=False )
@@ -82,6 +83,7 @@ def getGnt(book='Matthew', chapter=1):
 
     for v in verseNode: 
         sectionFromVerse = gnt.T.sectionFromNode(v)
+        vcode = vp.nodetocode(sectionFromVerse, vp.bookList)
         while sectionFromVerse[2] != n:
             verse += '<li style="font-size:20px; padding-bottom:15px;">[없음]</li>'
             n = n + 1
@@ -135,7 +137,12 @@ def getGnt(book='Matthew', chapter=1):
 
         ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
-        verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button>'
+        verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
+
+        #절노트 버튼
+        versenote_url = "'../../commentary/vcode/" + vcode + "'" 
+        verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '">절노트</button>'
+
         verse +='</li>'
         #한글 구절 추가
         verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
