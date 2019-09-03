@@ -13,6 +13,7 @@ from tf.fabric import Fabric
 import os
 import json
 import codecs
+import csv
 from flask import request
 
 from sblgnt_back.controller import translate as tr
@@ -175,13 +176,26 @@ def word_function(node):
         w_f.append("격: " + tr.eng_to_kor(gnt.F.Case.v(node), "full"))
 #    if gnt.F.Type.v(node):
 #        w_f.append("유형: " + tr.eng_to_kor(gnt.F.Type.v(node), "full"))
-    if gnt.F.gloss.v(node):
-        w_f.append("의미: " + gnt.F.gloss.v(node))
+    # if gnt.F.gloss.v(node):
+        # w_f.append("의미: " + gnt.F.gloss.v(node))
+    w_f.append("의미: " + get_kor_hgloss(gnt.F.strong.v(node), node))
     if gnt.F.strong.v(node):
         w_f.append("<a href=https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node)  + " target=_blank>네이버사전</a>")
         w_f.append("<a href=https://biblehub.com/str/greek/" + gnt.F.strong.v(node)  + ".htm target=_blank>바이블허브</a>")
 
     return w_f
+
+def get_kor_hgloss(strongnum, w):
+    f = open('sblgnt_back/static/csv/gstrong.csv', 'r', encoding='utf-8')
+    gstrong = list(csv.reader(f))
+    try:
+        gloss = gstrong[int(strongnum)]
+        f.close()
+        result = gloss[1].split(';')
+        return result[0]
+    except:
+        f.close()
+        return gnt.F.gloss.v(node)
 
 # 절 정보 불러오기
 def verse_function(node):
@@ -190,7 +204,8 @@ def verse_function(node):
 
     for w in wordsNode:
         verse_api['words'].append(gnt.F.g_word.v(w))
-        verse_api['gloss'].append(gnt.F.gloss.v(w))
+        # verse_api['gloss'].append(gnt.F.gloss.v(w))
+        verse_api['gloss'].append(get_kor_hgloss(gnt.F.strong.v(w), w))
         pdp = tr.eng_to_kor(gnt.F.psp.v(w), 'abbr')
         verse_api['pdp'].append(pdp)
         if pdp == '동':
