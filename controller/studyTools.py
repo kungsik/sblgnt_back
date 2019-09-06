@@ -99,9 +99,14 @@ def gntReadingTool(rangeCode, check1, check2):
                             Number = tr.eng_to_kor(gnt.F.Number.v(w), 'full')
                         else:
                             Number = ''
+                            
+                        if  tr.eng_to_kor(gnt.F.Case.v(w), 'full'):
+                            Case = tr.eng_to_kor(gnt.F.Case.v(w), 'full')
+                        else:
+                            Case = ''
 
                         parsing += "(" + gnt.F.UnicodeLemma.v(w) + ") "
-                        parsing += Gender + "." + Number + " "
+                        parsing += Gender + "." + Number + "." + Case + " "
 
                     parsing += "(" + gloss + ")<br>"
             
