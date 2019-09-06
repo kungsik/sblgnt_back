@@ -1,5 +1,7 @@
 # from tf.fabric import Fabric
 import json
+import locale
+import unicodedata
 # from flask import request
 
 from sblgnt_back.controller import translate as tr
@@ -124,9 +126,18 @@ def gntReadingTool(rangeCode, check1, check2):
         result += '<br>'
         result += '<div class="wordlist">'
 
-        sorted_vocalist = sorted(vocalist.items())
-        for voca in sorted_vocalist:
-            result += '<span class="parsing_gnt">' + voca[0] + '</span> <span class="parsing">' + voca[1] + '</span><br>'
+        greek_list = []
+        for k,v in vocalist.items():
+            greek_list.append(k)
+
+        locale.setlocale(locale.LC_ALL, "el_GR.UTF-8")
+        sorted_greeklist = sorted(greek_list, key=locale.strxfrm)
+        # sorted_greeklist = sorted(greek_list)
+
+        # print(sorted_greeklist)
+
+        for voca in sorted_greeklist:
+            result += '<span class="parsing_gnt">' + voca + '</span> <span class="parsing">' + vocalist[voca] + '</span><br>'
         
         result += '</div>'
     
