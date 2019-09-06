@@ -71,3 +71,43 @@ def nodetocode(section, bookList):
         result = result + versecode
     
     return result
+
+def booknameconv(v, book1, book2):
+    num = book1.index(v)
+    return book2[num] 
+
+
+#1001001-1002001; 2001001-2002001 ==> Genesis, 1, 1 ~ Genesis, 2, 1; + Exodus ...
+def codetorange(code):
+    code = code.replace(" ", "")
+    codeSplit1 = code.split(';')
+    nodeList = []
+    for c1 in codeSplit1:
+        codeSplit2 = c1.split('-')
+        i = 0
+        for c2 in codeSplit2:
+            if len(c2) != 7 and len(c2) != 8:
+                return False
+            #book
+            if len(c2) == 7:
+                bookCodeList = int(c2[0])
+                bookCode = bookList[bookCodeList]
+            elif len(c2) == 8:
+                bookCodeList = int(c2[0] + c2[1])
+                bookCode = bookList[bookCodeList]
+            #chapter
+            chpCode = c2[-6] +  c2[-5] +  c2[-4]
+            chpCode = int(chpCode)
+            #verse
+            verseCode = c2[-3] +  c2[-2] +  c2[-1]
+            verseCode = int(verseCode)
+            if i == 0:
+                first = T.nodeFromSection((bookCode, chpCode, verseCode))
+                i = 1
+                if len(codeSplit2) < 2:
+                    nodeList.append(first)
+            else:
+                last = T.nodeFromSection((bookCode, chpCode, verseCode))
+                for n in range(first, last + 1):
+                    nodeList.append(n)    
+    return nodeList

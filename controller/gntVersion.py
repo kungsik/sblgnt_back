@@ -14,7 +14,7 @@ import os
 import json
 import codecs
 import csv
-from flask import request
+# from flask import request
 
 from sblgnt_back.controller import translate as tr
 from sblgnt_back.lib import vcodeparser as vp

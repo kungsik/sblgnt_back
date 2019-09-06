@@ -1,2 +1,4 @@
 *.pyc
 __pycache__/
+controller/__pycache__/
+static/csv/

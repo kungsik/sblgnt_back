@@ -7,6 +7,7 @@ api response정의
 from flask import Blueprint, jsonify, request
 #from sblgnt_back.controller import translateVersion as tv
 from sblgnt_back.controller import gntVersion as gv
+from sblgnt_back.controller import studytools as st
 
 
 api = Blueprint('api', __name__)
@@ -38,3 +39,15 @@ def gntverseinfo(node):
     result = gv.verse_function(node)
     gntverseinfo = {'gntverseinfo': result}
     return jsonify(gntverseinfo)
+
+#gnt readingtool 
+@api.route('/reading/gnt/', methods=['GET', 'POST'])
+def gntReadingTool():
+    if request.method == 'POST':      
+        rangeCode = request.form['rangeCode']
+        check1 = request.form['check1']
+        check2 = request.form['check2']
+        
+        result = st.gntReadingTool(rangeCode, check1, check2)
+        gntreadingtool = {'gntreadingtool' : result}
+        return jsonify(gntreadingtool)
