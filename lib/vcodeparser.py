@@ -78,7 +78,7 @@ def booknameconv(v, book1, book2):
 
 
 #1001001-1002001; 2001001-2002001 ==> Genesis, 1, 1 ~ Genesis, 2, 1; + Exodus ...
-def codetorange(code):
+def codetorange(code, gntfabric):
     code = code.replace(" ", "")
     codeSplit1 = code.split(';')
     nodeList = []
@@ -102,12 +102,12 @@ def codetorange(code):
             verseCode = c2[-3] +  c2[-2] +  c2[-1]
             verseCode = int(verseCode)
             if i == 0:
-                first = T.nodeFromSection((bookCode, chpCode, verseCode))
+                first = gntfabric.T.nodeFromSection((bookCode, chpCode, verseCode))
                 i = 1
                 if len(codeSplit2) < 2:
                     nodeList.append(first)
             else:
-                last = T.nodeFromSection((bookCode, chpCode, verseCode))
+                last = gntfabric.T.nodeFromSection((bookCode, chpCode, verseCode))
                 for n in range(first, last + 1):
                     nodeList.append(n)    
     return nodeList

@@ -69,13 +69,6 @@ def json_to_verse(ver, book, chp, bib):
 def getGnt(book='Matthew', chapter=1):
     chpNode = gnt.T.nodeFromSection((book, chapter))
     verseNode = gnt.L.d(chpNode, otype='verse')
-    # verse = '''
-    #     <div ref='verse'>
-    #     <div style="text-align:left">
-    #     <b-button size='sm' id='syntax_enact' ref='syntax' variant='outline-secondary' @click='gntsyntax'>구문단위표시</b-button>
-    #     </div>
-    #     <ol>
-    # '''
     verse = '<ol>'
 
     #한글 번역본 로드(신약)
@@ -136,7 +129,7 @@ def getGnt(book='Matthew', chapter=1):
             if w == lastClauseWordNode: verse += '</span>'
             if w == lastClauseAtomWordNode: verse += '</span>'
 
-        ## span end태그 오류가 생길 경우(신택스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
+        ## span end태그 오류가 생길 경우(신텍스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
         verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
 

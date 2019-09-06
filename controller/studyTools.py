@@ -1,20 +1,17 @@
 # from tf.fabric import Fabric
 import json
-import csv
 # from flask import request
 
 from sblgnt_back.controller import translate as tr
 from sblgnt_back.lib import vcodeparser as vp
 from sblgnt_back.controller.gntVersion import gnt, get_kor_hgloss
 
-gnt.makeAvailableIn(globals())
-
 def gntReadingTool(rangeCode, check1, check2):
 
     sections = rangeCode.split(";")
 
     result = '<div class="reading">'
-    result += '<h3>알파알렙 성경 원문읽기 도우미</h3><br>'
+    result += '<h3>알파알렙 성경 원문읽기 도우미 (신약)</h3><br>'
 
     if not check1:
         parsing = '<h4>단어 문법 분석</h4>'
@@ -24,7 +21,7 @@ def gntReadingTool(rangeCode, check1, check2):
     vocalist = {}
 
     for section in sections:
-        nodeList = vp.codetorange(section)
+        nodeList = vp.codetorange(section, gnt)
         sectionTitle = vp.codetostr(section, vp.bookListKor)
     
         if nodeList == False:
@@ -37,56 +34,69 @@ def gntReadingTool(rangeCode, check1, check2):
         
         result += '<h4>' + sectionTitle + '</h4>'
         result += '<br>'
-        result += '<div class="section">'
+        result += '<div class="section_gnt">'
         
         for node in nodeList:
-            section = T.sectionFromNode(node)
-            wordsNode = L.d(node, otype='word')
-            result += '<span class=chpvrs>' + str(section[2]) + '</span> <span class="verse">' + T.text(wordsNode) + '</span>'
+            section = gnt.T.sectionFromNode(node)
+            wordsNode = gnt.L.d(node, otype='word')
+            result += '<span class=chpvrs>' + str(section[2]) + '</span> <span class="verse">' + gnt.T.text(wordsNode) + '</span>'
 
             if not check1:
                 parsing += vp.booknameconv(section[0], vp.bookList, vp.bookListKorAbbr) + str(section[1]) + ":" + str(section[2]) + "<br>"
 
             for w in wordsNode:
-                strong = gnt.F.strong.v(node)
+                strong = gnt.F.strong.v(w)
                 gloss = get_kor_hgloss(strong, w)
 
                 if not check2:
-                    root = F.voc_utf8.v(L.u(w, otype='lex')[0])
+                    root = gnt.F.UnicodeLemma.v(w)
 
                     if not root in vocalist:
                         vocalist[root] = gloss
 
                 if not check1:                  
-                    pdp = kb.eng_to_kor(F.pdp.v(w), 'full')
-                    if pdp == '전치사' or pdp == '관사' or pdp == '접속사' or pdp == '관계사' or pdp == '부사':
+                    pdp = tr.eng_to_kor(gnt.F.psp.v(w), 'full')
+                    if pdp == '전치사' or pdp == '관사' or pdp == '정관사' or pdp == '접속사' or pdp == '관계사' or pdp == '부사':
                         continue
 
-                    parsing += '<span class="parsing_heb">'
+                    parsing += '<span class="parsing_gnt">'
                     parsing += "[" + gnt.F.g_word.v(w) + "] "
                     parsing += "</span>"
 
                     parsing += pdp + " "
 
-                    # 여기서부터
                     if pdp == '동사':
+                        if gnt.F.Person.v(w):
+                            Person = tr.eng_to_kor(gnt.F.Person.v(w), 'full')
+                        else: 
+                            Person = ''
+
+                        if tr.eng_to_kor(gnt.F.Number.v(w), 'full'):
+                            Number = tr.eng_to_kor(gnt.F.Number.v(w), 'full')
+                        else:
+                            Number = ''
+
+                        if tr.eng_to_kor(gnt.F.Mood.v(w), 'full'):
+                            Mood = tr.eng_to_kor(gnt.F.Mood.v(w), 'full')
+                        else: 
+                            Mood = ''
+
+                        if tr.eng_to_kor(gnt.F.Voice.v(w), 'full'):
+                            Voice = tr.eng_to_kor(gnt.F.Voice.v(w), 'full')
+                        else:
+                            Voice = ''
+
                         parsing += "(" + gnt.F.UnicodeLemma.v(w) + ") "
-                        parsing += tr.eng_to_kor(F.vt.v(w), 'full') + "." + tr.eng_to_kor(F.ps.v(w), 'full') + "." + tr.eng_to_kor(F.gn.v(w), 'full') + "." + tr.eng_to_kor(F.nu.v(w), 'full') + " "
-                        if F.prs_ps.v(w) != 'unknown':
-                            parsing += "접미."
-                            parsing += kb.eng_to_kor(F.prs_ps.v(w), 'full') + "." + kb.eng_to_kor(F.prs_gn.v(w), 'full') + "." + kb.eng_to_kor(F.prs_nu.v(w), 'full') + " "
-                    
-                    if pdp == '명사':
-                        parsing += "(" + F.voc_utf8.v(L.u(w, otype='lex')[0]) + ") "
-                        parsing += kb.eng_to_kor(F.gn.v(w), 'full') + "." + kb.eng_to_kor(F.nu.v(w), 'full') + " "
-                    
-                    if F.g_prs_utf8.v(w) != "":
-                        parsing += "접미." + kb.eng_to_kor(F.prs_ps.v(w), 'full') + "." + kb.eng_to_kor(F.prs_gn.v(w), 'full') + "." + kb.eng_to_kor(F.prs_nu.v(w), 'full') + " "
+                        parsing += tr.eng_to_kor(gnt.F.Tense.v(w), 'full') + "." + Person + "." + Number + " " + Mood + " " + Voice + " "
+                                
+                    if pdp == '명사' or pdp == '형용사' or pdp == '인칭대명사':
+                        parsing += "(" + gnt.F.UnicodeLemma.v(w) + ") "
+                        parsing += tr.eng_to_kor(gnt.F.Gender.v(w), 'full') + "." + tr.eng_to_kor(gnt.F.Number.v(w), 'full') + " "
 
                     parsing += "(" + gloss + ")<br>"
             
             if not check1:
-                parsing += "<br>"
+                parsing += "<br>" 
         
         result += '</div><br><br>'
     
@@ -101,7 +111,7 @@ def gntReadingTool(rangeCode, check1, check2):
 
         sorted_vocalist = sorted(vocalist.items())
         for voca in sorted_vocalist:
-            result += '<span class="parsing_heb">' + voca[0] + '</span> <span class="parsing">' + voca[1] + '</span><br>'
+            result += '<span class="parsing_gnt">' + voca[0] + '</span> <span class="parsing">' + voca[1] + '</span><br>'
         
         result += '</div>'
     
