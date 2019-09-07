@@ -91,7 +91,7 @@ def gntReadingTool(rangeCode, check1, check2):
                         parsing += "(" + gnt.F.UnicodeLemma.v(w) + ") "
                         parsing += tr.eng_to_kor(gnt.F.Tense.v(w), 'full') + "." + Person + "." + Number + " " + Mood + " " + Voice + " "
                                 
-                    if pdp == '명사' or pdp == '형용사' or pdp == '인칭대명사':
+                    if pdp == '명사' or pdp == '형용사' or pdp == '인칭대명사' or pdp == '정관사':
                         if tr.eng_to_kor(gnt.F.Gender.v(w), 'full'):
                             Gender = tr.eng_to_kor(gnt.F.Gender.v(w), 'full')
                         else:

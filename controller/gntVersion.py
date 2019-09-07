@@ -233,7 +233,7 @@ def verse_function(node):
 
             verse_api['parse'].append(parse_str)
             verse_api['parse2'].append(parse_str2)
-        elif pdp == '명' or pdp == '형':
+        elif pdp == '명' or pdp == '형' or pdp == '관':
             parse_str = tr.eng_to_kor(gnt.F.Gender.v(w), 'abbr') + tr.eng_to_kor(gnt.F.Number.v(w), 'abbr')
             verse_api['parse'].append(parse_str)
 
