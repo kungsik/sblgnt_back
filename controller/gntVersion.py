@@ -135,7 +135,7 @@ def getGnt(book='Matthew', chapter=1):
 
         #절노트 버튼
         versenote_url = "'../../commentary/vcode/" + vcode + "'" 
-        verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '">주석</button>'
+        verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '" formtarget="_blank">주석</button>'
 
         verse +='</li>'
         #한글 구절 추가
