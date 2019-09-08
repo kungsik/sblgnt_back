@@ -134,8 +134,9 @@ def getGnt(book='Matthew', chapter=1):
         verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
 
         #절노트 버튼
-        versenote_url = "'../../commentary/vcode/" + vcode + "'" 
-        verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '" formtarget="_blank">주석</button>'
+        versenote_url = "../../commentary/vcode/" + vcode + "/"
+        verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-default btn-xs verse_note">주석</button></a>'
+        # verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '" formtarget="_blank">주석</button>'
 
         verse +='</li>'
         #한글 구절 추가
