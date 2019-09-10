@@ -145,7 +145,7 @@ def getGnt(book='Matthew', chapter=1):
 
         n = n + 1
 
-    verse += '</ol></div>'
+    verse += '</ol>'
     return verse
 
 # 단어 정보 불러오기
