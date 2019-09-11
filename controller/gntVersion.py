@@ -64,6 +64,11 @@ def json_to_verse(ver, book, chp, bib):
         except KeyError:
             return 'DB 오류로 번역지원되지 않음.'
 
+# 그리스어 텍스트 마지막 장 불러오기
+def getlastchp(book):
+    whole_chpNode = gnt.T.nodeFromSection((book,))
+    last_chp = gnt.T.sectionFromNode(whole_chpNode, lastSlot=True)
+    return last_chp[1]
 
 # 그리스어 텍스트 불러오기
 def getGnt(book='Matthew', chapter=1):
@@ -131,13 +136,11 @@ def getGnt(book='Matthew', chapter=1):
 
         ## span end태그 오류가 생길 경우(신텍스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
-        verse += '<button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
+        verse += '<br><button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
 
         #절노트 버튼
         versenote_url = "../../commentary/vcode/" + vcode + "/"
         verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-default btn-xs verse_note">주석</button></a>'
-        # verse += '<button type="button" class="btn btn-default btn-xs verse_note" onclick="location.href=' + versenote_url + '" formtarget="_blank">주석</button>'
-
         verse +='</li>'
         #한글 구절 추가
         verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'

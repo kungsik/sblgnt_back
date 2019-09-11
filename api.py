@@ -23,7 +23,8 @@ api = Blueprint('api', __name__)
 @api.route('/text/gnt/<string:book>/<int:chp>/')
 def gntVersion(book, chp):
     result = gv.getGnt(book, chp)
-    verse = {'verse': result}
+    lastchp = gv.getlastchp(book)
+    verse = {'verse': result, 'lastchp': lastchp}
     return jsonify(verse)
 
 # gnt 단어 분석
