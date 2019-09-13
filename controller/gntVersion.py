@@ -87,10 +87,12 @@ def getGnt(book='Matthew', chapter=1):
         sectionFromVerse = gnt.T.sectionFromNode(v)
         vcode = vp.nodetocode(sectionFromVerse, vp.bookList)
         while sectionFromVerse[2] != n:
-            verse += '<li style="font-size:20px; padding-bottom:15px;">[없음]</li>'
+            verse += '<li style="font-size:18px; padding-bottom:15px;">[없음]</li>'
             n = n + 1
 
-        verse += '<li style="font-size:20px;">'
+        verse += '<li style="font-size:18px;">'
+        verse += '<div class=verseContainer>'
+        verse += '<div class=verseNode>'
         wordsNode = gnt.L.d(v, otype='word')
         for w in wordsNode:
             clauseNode = gnt.L.u(w, otype='clause')
@@ -144,14 +146,20 @@ def getGnt(book='Matthew', chapter=1):
         #절노트 버튼
         versenote_url = "../../commentary/vcode/" + vcode + "/"
         verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-default btn-xs verse_note">주석</button></a>'
-        verse +='</li>'
 
+        verse += '</div>' #versenode
+
+        verse += '<div class="transversions">'
         #개역한글 구절 추가
         verse += '<p class=gnt_kor>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
-        verse += '</li>'
 
         #kjv 구절 추가
         verse += '<p class=gnt_kjv>' + str(chapter) + ':' + str(n) + ' ' + kjvVrs[str(n)] + '</p>'
+
+        verse += "</div>" #transversions
+
+        verse += '</div>' #versecontainer
+
         verse += '</li>'
 
         n = n + 1

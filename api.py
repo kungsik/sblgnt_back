@@ -48,7 +48,8 @@ def gntReadingTool():
         rangeCode = request.form['rangeCode']
         check1 = request.form['check1']
         check2 = request.form['check2']
+        check3 = request.form['check3']
         
-        result = st.gntReadingTool(rangeCode, check1, check2)
+        result = st.gntReadingTool(rangeCode, check1, check2, check3)
         gntreadingtool = {'gntreadingtool' : result}
         return jsonify(gntreadingtool)
