@@ -76,8 +76,11 @@ def getGnt(book='Matthew', chapter=1):
     verseNode = gnt.L.d(chpNode, otype='verse')
     verse = '<ol>'
 
-    #한글 번역본 로드(신약)
+    #개역한글 번역본 로드(신약)
     korVrs = json_to_verse('kor', book, chapter, 'new')
+
+    #kjv 번역본 로드(신약)
+    kjvVrs = json_to_verse('kjv', book, chapter, 'new')
     n = 1
 
     for v in verseNode: 
@@ -142,8 +145,13 @@ def getGnt(book='Matthew', chapter=1):
         versenote_url = "../../commentary/vcode/" + vcode + "/"
         verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-default btn-xs verse_note">주석</button></a>'
         verse +='</li>'
-        #한글 구절 추가
-        verse += '<p class=sblgnt_korean>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
+
+        #개역한글 구절 추가
+        verse += '<p class=gnt_kor>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
+        verse += '</li>'
+
+        #kjv 구절 추가
+        verse += '<p class=gnt_kjv>' + str(chapter) + ':' + str(n) + ' ' + kjvVrs[str(n)] + '</p>'
         verse += '</li>'
 
         n = n + 1
