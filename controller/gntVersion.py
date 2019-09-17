@@ -151,10 +151,10 @@ def getGnt(book='Matthew', chapter=1):
 
         verse += '<div class="transversions">'
         #개역한글 구절 추가
-        verse += '<p class=gnt_kor>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
+        verse += '<p class=kor>' + str(chapter) + ':' + str(n) + ' ' + korVrs[str(n)] + '</p>'
 
         #kjv 구절 추가
-        verse += '<p class=gnt_kjv>' + str(chapter) + ':' + str(n) + ' ' + kjvVrs[str(n)] + '</p>'
+        verse += '<p class=kjv>' + str(chapter) + ':' + str(n) + ' ' + kjvVrs[str(n)] + '</p>'
 
         verse += "</div>" #transversions
 
