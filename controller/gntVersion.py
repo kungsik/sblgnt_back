@@ -141,11 +141,11 @@ def getGnt(book='Matthew', chapter=1):
 
         ## span end태그 오류가 생길 경우(신텍스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
-        verse += '<br><button type="button" class="btn btn-default btn-xs sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
+        verse += '<br><button type="button" class="btn btn-outline-secondary btn-sm sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
 
         #절노트 버튼
         versenote_url = "../../commentary/vcode/" + vcode + "/"
-        verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-default btn-xs verse_note">주석</button></a>'
+        verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-outline-secondary btn-sm verse_note">주석</button></a>'
 
         verse += '</div>' #versenode
 
