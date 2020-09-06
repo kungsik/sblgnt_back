@@ -98,9 +98,18 @@ def getGnt(book='Matthew', chapter=1):
             clauseNode = gnt.L.u(w, otype='clause')
             clauseAtomNode = gnt.L.u(w, otype='clause_atom')
 
-            firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
-            lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
+            try:
+                if gnt.L.d(clauseNode[0], otype='word')[0]:
+                    firstClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[0]
+            except IndexError:
+                pass
 
+            try:
+                if gnt.L.d(clauseNode[0], otype='word')[-1]:
+                    lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
+            except IndexError:
+                pass
+            
             try:
                 if gnt.L.d(clauseAtomNode[0], otype='word')[0]:
                     firstClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[0]
