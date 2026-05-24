@@ -22,6 +22,7 @@ from sblgnt_back.lib import vcodeparser as vp
 SBLGNT = 'sblgnt'
 TG = Fabric( modules=SBLGNT, silent=False )
 
+
 gnt = TG.load('''
     book chapter verse
     g_word trailer
@@ -202,8 +203,9 @@ def word_function(node):
         # w_f.append("의미: " + gnt.F.gloss.v(node))
     w_f.append("의미: " + get_kor_hgloss(gnt.F.strong.v(node), node))
     if gnt.F.strong.v(node):
-        w_f.append("<a href=https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node)  + " target=_blank>네이버사전</a>")
-        w_f.append("<a href=https://biblehub.com/str/greek/" + gnt.F.strong.v(node)  + ".htm target=_blank>바이블허브</a>")
+        w_f.append("<a href='#' onclick=\"openDictPopup('https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node) + "'); return false;\">네이버사전</a>")
+        w_f.append("<a href='#' onclick=\"openDictPopup('https://biblehub.com/str/greek/" + gnt.F.strong.v(node) + ".htm'); return false;\">바이블허브</a>")
+        w_f.append("<a href='#' onclick=\"openDictPopup('/sblgnt/sdbh/" + gnt.F.strong.v(node) + "/'); return false;\">SDBH</a>")
 
     return w_f
 
