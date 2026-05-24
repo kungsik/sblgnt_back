@@ -67,8 +67,8 @@ def json_to_verse(ver, book, chp, bib):
 # 그리스어 텍스트 마지막 장 불러오기
 def getlastchp(book):
     whole_chpNode = gnt.T.nodeFromSection((book,))
-    last_chp = gnt.T.sectionFromNode(whole_chpNode, lastSlot=True)
-    return last_chp[1]
+    chapter_nodes = gnt.L.d(whole_chpNode, otype='chapter')
+    return gnt.T.sectionFromNode(chapter_nodes[-1])[1]
 
 # 그리스어 텍스트 불러오기
 def getGnt(book='Matthew', chapter=1):
