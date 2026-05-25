@@ -14,6 +14,8 @@ import os
 import json
 import codecs
 import csv
+import xml.etree.ElementTree as ET
+from collections import defaultdict
 # from flask import request
 
 from sblgnt_back.controller import translate as tr
@@ -21,6 +23,30 @@ from sblgnt_back.lib import vcodeparser as vp
 
 SBLGNT = 'sblgnt'
 TG = Fabric( modules=SBLGNT, silent=False )
+
+# ── 평행구 데이터 ──────────────────────────────────────────────────────────────
+_TF_TO_XML_GRK = {
+    'Matthew':'MAT','Mark':'MRK','Luke':'LUK','John':'JHN','Acts':'ACT',
+    'Romans':'ROM','1_Corinthians':'1CO','2_Corinthians':'2CO','Galatians':'GAL',
+    'Ephesians':'EPH','Philippians':'PHP','Colossians':'COL',
+    '1_Thessalonians':'1TH','2_Thessalonians':'2TH','1_Timothy':'1TI','2_Timothy':'2TI',
+    'Titus':'TIT','Philemon':'PHM','Hebrews':'HEB','James':'JAS',
+    '1_Peter':'1PE','2_Peter':'2PE','1_John':'1JN','2_John':'2JN','3_John':'3JN',
+    'Jude':'JUD','Revelation':'REV',
+}
+
+_GNT_PARALLEL = defaultdict(list)
+_this_dir     = os.path.dirname(os.path.abspath(__file__))
+_project_root = os.path.dirname(os.path.dirname(_this_dir))
+_parallel_xml = os.path.join(_project_root, 'kimsbible', 'static', 'json', 'ParallelPassages.xml')
+if os.path.exists(_parallel_xml):
+    _pt = ET.parse(_parallel_xml)
+    for _passage in _pt.getroot().findall('Passage'):
+        _verses = _passage.findall('Verse')
+        _refs = [(v.text.strip(), 'HEB' if v.get('HEB') else 'GRK') for v in _verses]
+        for i, (_ref, _type) in enumerate(_refs):
+            _others = [{'ref': r, 'type': t} for j, (r, t) in enumerate(_refs) if j != i]
+            _GNT_PARALLEL[_ref].extend(_others)
 
 
 gnt = TG.load('''
@@ -156,6 +182,13 @@ def getGnt(book='Matthew', chapter=1):
         #절노트 버튼
         versenote_url = "../../commentary/vcode/" + vcode + "/"
         verse += '<a href="' + versenote_url + '" target="_blank"><button class="btn btn-outline-secondary btn-sm verse_note">주석</button></a>'
+
+        # 평행구 버튼 (평행구가 존재하는 절에만 표시)
+        _xml_abbr = _TF_TO_XML_GRK.get(sectionFromVerse[0])
+        if _xml_abbr:
+            _xml_ref = _xml_abbr + ' ' + str(sectionFromVerse[1]) + ':' + str(sectionFromVerse[2])
+            if _xml_ref in _GNT_PARALLEL:
+                verse += ' <button type="button" class="btn btn-outline-success btn-sm parallel_btn" data-ref="' + _xml_ref + '">평행구</button>'
 
         verse += '</div>' #versenode
 
