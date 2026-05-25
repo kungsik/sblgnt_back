@@ -37,8 +37,8 @@ _TF_TO_XML_GRK = {
 
 _GNT_PARALLEL = defaultdict(list)
 _this_dir     = os.path.dirname(os.path.abspath(__file__))
-_project_root = os.path.dirname(os.path.dirname(_this_dir))
-_parallel_xml = os.path.join(_project_root, 'kimsbible', 'static', 'json', 'ParallelPassages.xml')
+_sblgnt_root  = os.path.dirname(_this_dir)
+_parallel_xml = os.path.join(_sblgnt_root, 'static', 'json', 'ParallelPassages.xml')
 if os.path.exists(_parallel_xml):
     _pt = ET.parse(_parallel_xml)
     for _passage in _pt.getroot().findall('Passage'):
