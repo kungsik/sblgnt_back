@@ -35,6 +35,18 @@ _TF_TO_XML_GRK = {
     'Jude':'JUD','Revelation':'REV',
 }
 
+# 대한성서공회 URL 코드 매핑 (신약)
+_BSKOREA_GRK_MAP = {
+    'Matthew': 'MAT', 'Mark': 'MRK', 'Luke': 'LUK', 'John': 'JHN',
+    'Acts': 'ACT', 'Romans': 'ROM', '1_Corinthians': '1CO',
+    '2_Corinthians': '2CO', 'Galatians': 'GAL', 'Ephesians': 'EPH',
+    'Philippians': 'PHP', 'Colossians': 'COL', '1_Thessalonians': '1TH',
+    '2_Thessalonians': '2TH', '1_Timothy': '1TI', '2_Timothy': '2TI',
+    'Titus': 'TIT', 'Philemon': 'PHM', 'Hebrews': 'HEB', 'James': 'JAS',
+    '1_Peter': '1PE', '2_Peter': '2PE', '1_John': '1JN', '2_John': '2JN',
+    '3_John': '3JN', 'Jude': 'JUD', 'Revelation': 'REV',
+}
+
 _GNT_PARALLEL = defaultdict(list)
 _this_dir     = os.path.dirname(os.path.abspath(__file__))
 _sblgnt_root  = os.path.dirname(_this_dir)
@@ -177,7 +189,16 @@ def getGnt(book='Matthew', chapter=1):
 
         ## span end태그 오류가 생길 경우(신텍스 뷰어 설정시) 아래와 같이 조정하면 고쳐짐.
         verse += '</span></span></span></span>'
-        verse += '<br><button type="button" class="btn btn-outline-secondary btn-sm sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '    
+        verse += '<br>'
+
+        # 대한성서공회 버튼
+        _bskorea_code = _BSKOREA_GRK_MAP.get(sectionFromVerse[0])
+        if _bskorea_code:
+            _bskorea_url = 'https://bible.bskorea.or.kr/bible/NKT,NKRV/' + _bskorea_code + '.' + str(sectionFromVerse[1]) + '.' + str(sectionFromVerse[2])
+            verse += '<a href="' + _bskorea_url + '" target="_blank"><button class="btn btn-outline-dark btn-sm">성서공회</button></a> '
+
+        # 절분석 버튼
+        verse += '<button type="button" class="btn btn-outline-secondary btn-sm sblgnt_verse_analysis" verse_node='+str(v)+'>절분석</button> '
 
         #절노트 버튼
         versenote_url = "../../commentary/vcode/" + vcode + "/"
