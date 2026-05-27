@@ -126,10 +126,10 @@ def getGnt(book='Matthew', chapter=1):
         sectionFromVerse = gnt.T.sectionFromNode(v)
         vcode = vp.nodetocode(sectionFromVerse, vp.bookList)
         while sectionFromVerse[2] != n:
-            verse += '<li style="font-size:18px; padding-bottom:15px;">[없음]</li>'
+            verse += '<li id="' + str(n) + '" style="font-size:18px; padding-bottom:15px;">[없음]</li>'
             n = n + 1
 
-        verse += '<li style="font-size:18px;">'
+        verse += '<li id="' + str(n) + '" style="font-size:18px;">'
         verse += '<div class=verseContainer>'
         verse += '<div class=verseNode>'
         wordsNode = gnt.L.d(v, otype='word')
