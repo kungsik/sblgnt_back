@@ -122,7 +122,7 @@ def getGnt(book='Matthew', chapter=1):
     kjvVrs = json_to_verse('kjv', book, chapter, 'new')
     n = 1
 
-    for v in verseNode: 
+    for v in verseNode:
         sectionFromVerse = gnt.T.sectionFromNode(v)
         vcode = vp.nodetocode(sectionFromVerse, vp.bookList)
         while sectionFromVerse[2] != n:
@@ -148,7 +148,7 @@ def getGnt(book='Matthew', chapter=1):
                     lastClauseWordNode = gnt.L.d(clauseNode[0], otype='word')[-1]
             except IndexError:
                 pass
-            
+
             try:
                 if gnt.L.d(clauseAtomNode[0], otype='word')[0]:
                     firstClauseAtomWordNode = gnt.L.d(clauseAtomNode[0], otype='word')[0]
@@ -258,7 +258,7 @@ def word_function(node):
     w_f.append("의미: " + get_kor_hgloss(gnt.F.strong.v(node), node))
     if gnt.F.strong.v(node):
         w_f.append("<a href='#' onclick=\"openDictPopup('https://dict.naver.com/ancientgreek/#/search?query=" + gnt.F.strong.v(node) + "'); return false;\">네이버사전</a>")
-        w_f.append("<a href='#' onclick=\"openDictPopup('https://biblehub.com/str/greek/" + gnt.F.strong.v(node) + ".htm'); return false;\">바이블허브</a>")
+        w_f.append("<a href='#' onclick=\"openDictPopup('https://biblehub.com/greek/" + gnt.F.strong.v(node) + ".htm'); return false;\">바이블허브</a>")
         w_f.append("<a href='#' onclick=\"openDictPopup('/sblgnt/sdbh/" + gnt.F.strong.v(node) + "/'); return false;\">SDBH</a>")
 
     return w_f
@@ -343,7 +343,7 @@ def verse_function(node):
 
     verse_str['kor'].append(korVrs)
     verse_str['kjv'].append(kjvVrs)
- 
+
     result = {
         "scripture": section[0] + " " + str(section[1]) + ":" + str(section[2]),
         "parsing": verse_api,
